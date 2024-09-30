@@ -1,0 +1,110 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Equipo {
+public:
+    string nombre;
+
+    Equipo(string n) : nombre(n) {}
+
+    void mostrarNombre() {
+        cout << "Equipo: " << nombre << endl;
+    }
+};
+
+class Partido {
+public:
+    Equipo equipoLocal;
+    Equipo equipoVisitante;
+    int golesLocal = 0;
+    int golesVisitante = 0;
+    int cornersLocal = 0;
+    int cornersVisitante = 0;
+    int faltasLocal = 0;
+    int faltasVisitante = 0;
+
+    Partido(Equipo el, Equipo ev) : equipoLocal(el), equipoVisitante(ev) {}
+
+    void registrarGol(char equipo) {
+        if (equipo == 'l') {
+            golesLocal++;
+        } else if (equipo == 'v') {
+            golesVisitante++;
+        }
+    }
+
+    void registrarCorner(char equipo) {
+        if (equipo == 'l') {
+            cornersLocal++;
+        } else if (equipo == 'v') {
+            cornersVisitante++;
+        }
+    }
+
+    void registrarFalta(char equipo) {
+        if (equipo == 'l') {
+            faltasLocal++;
+        } else if (equipo == 'v') {
+            faltasVisitante++;
+        }
+    }
+
+    void mostrarMarcador() {
+        cout << "Marcador: " << equipoLocal.nombre << " " << golesLocal << " - " << golesVisitante << " " << equipoVisitante.nombre << endl;
+    }
+
+    void mostrarEstadisticas() {
+        cout << "\nEstadisticas:" << endl;
+        cout << equipoLocal.nombre << ": Goles: " << golesLocal << ", Corners: " << cornersLocal << ", Faltas: " << faltasLocal << endl;
+        cout << equipoVisitante.nombre << ": Goles: " << golesVisitante << ", Corners: " << cornersVisitante << ", Faltas: " << faltasVisitante << endl;
+    }
+};
+
+int main() {
+    string nombreEquipoLocal, nombreEquipoVisitante;
+    cout << "Ingrese el nombre del equipo local: ";
+    getline(cin, nombreEquipoLocal);
+
+    cout << "Ingrese el nombre del equipo visitante: ";
+    getline(cin, nombreEquipoVisitante);
+
+    Equipo equipoLocal(nombreEquipoLocal);
+    Equipo equipoVisitante(nombreEquipoVisitante);
+    Partido partido(equipoLocal, equipoVisitante);
+
+    char continuar = 's';
+    while (continuar == 's') {
+        char evento;
+        cout << "\nIngrese el evento (g: gol, c: corner, f: falta, e: finalizar): ";
+        cin >> evento;
+
+        if (evento == 'g') {
+            char equipo;
+            cout << "Ingrese 'l' para el equipo local o 'v' para el equipo visitante: ";
+            cin >> equipo;
+            partido.registrarGol(equipo);
+        } else if (evento == 'c') {
+            char equipo;
+            cout << "Ingrese 'l' para el equipo local o 'v' para el equipo visitante: ";
+            cin >> equipo;
+            partido.registrarCorner(equipo);
+        } else if (evento == 'f') {
+            char equipo;
+            cout << "Ingrese 'l' para el equipo local o 'v' para el equipo visitante: ";
+            cin >> equipo;
+            partido.registrarFalta(equipo);
+        } else if (evento == 'e') {
+            continuar = 'n';
+        } else {
+            cout << "Evento no reconocido. Intente nuevamente." << endl;
+        }
+
+        partido.mostrarMarcador();
+    }
+
+    partido.mostrarEstadisticas();
+
+    return 0;
+}
